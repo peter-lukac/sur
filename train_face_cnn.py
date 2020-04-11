@@ -1,30 +1,13 @@
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
-from os import listdir
+import os
 import cv2
 import numpy as np
 import random
 import json
-
-def load_images(folders, grey_cale=True):
-    img_list = []
-    if type(folders) is str:
-        folders = [folders]
-    for folder in folders:
-        if folder[0] != '/':
-            folder = folder + '/'
-        imgs = listdir(folder)
-        for img in sorted(imgs):
-            if '.png' in img:
-                #print("loading: " + folder + img)
-                if grey_cale:
-                    i = cv2.imread(folder + img, cv2.IMREAD_GRAYSCALE).astype(np.float32)
-                    i.shape = (80,80,1)
-                    img_list.append(i)
-                else:
-                    img_list.append(cv2.imread(folder + img).astype(np.float32))
-    return img_list
+import sys
+from misc import load_images
 
 """
 cv2.imshow('Example - Show image in window', data[0]+1)
@@ -95,4 +78,7 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 
 # train
 model.fit(data, labels, batch_size=1, epochs=20, validation_data=(val_data, val_labels), shuffle=True)
+
+if len(sys.argv) == 2:
+    model.save(sys.argv[1])
 
