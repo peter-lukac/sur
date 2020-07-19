@@ -1,3 +1,10 @@
+"""
+Voice evaluation using CNN
+author: Peter Lukac
+login: xlukac11
+April 2020
+"""
+
 from keras.models import load_model
 from misc import load_images
 import json
@@ -9,7 +16,7 @@ from scipy.signal import spectrogram
 from misc import process_specs, split_specs, make_mel_filter_bank
 
 
-if len(sys.argv) < 4:
+if len(sys.argv) != 4:
     print("usage: python eval_voice.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE")
     sys.exit(1)
 

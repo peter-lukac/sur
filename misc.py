@@ -1,7 +1,15 @@
+"""
+Miscellaneous functions for classifiers
+author: Peter Lukac
+login: xlukac11
+April 2020
+"""
+
 from scipy.signal import spectrogram
 import soundfile as sf
 import numpy as np
 import os
+import matplotlib.pyplot as plt
 import cv2
 
 
@@ -93,21 +101,10 @@ def process_specs(spec_list, M):
 def split_specs(all_spec):
     new_all_spec = []
     for spec in all_spec:
-        """
-        plt.subplot(2,1,1)
-        plt.pcolormesh(spec)
-        """
         mask = filter_mask(spec)
         idxs = window_indeces(mask)
         windows = get_windows(spec, idxs)
         new_all_spec.extend(windows)
-        """
-        for i, w in enumerate(windows):
-            plt.subplot(2,len(windows),i+1+len(windows))
-            plt.axis('off')
-            plt.pcolormesh(w)
-        plt.show()
-        """
     return new_all_spec
 
 

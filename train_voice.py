@@ -1,3 +1,11 @@
+"""
+Voice training for CNN
+author: Peter Lukac
+login: xlukac11
+April 2020
+"""
+
+import time
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
@@ -5,13 +13,17 @@ import soundfile as sf
 from scipy.signal import spectrogram
 import matplotlib.pyplot as plt
 import numpy as np
-import pyworld as pw
 import os
 import json
 from misc import (filter_mask, window_indeces, get_windows,
                 load_specs, process_specs, split_specs, make_mel_filter_bank)
 import sys
 
+from numpy.random import seed
+seed(42)
+
+from tensorflow.compat.v2.random import set_seed
+set_seed(42)
 
 M = make_mel_filter_bank(120, 513, 8000)
 
@@ -79,8 +91,11 @@ model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
+t1 = time.time()
 # train
-model.fit(data, labels, batch_size=64, epochs=12, validation_data=(val_data, val_labels), shuffle=True)
+model.fit(data.astype('float32'), labels, batch_size=64, epochs=12, validation_data=(val_data, val_labels), shuffle=True)
+
+print("elapsed: " + str(time.time() - t1))
 
 if len(sys.argv) == 2:
     model.save(sys.argv[1])

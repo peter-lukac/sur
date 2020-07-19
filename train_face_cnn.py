@@ -1,3 +1,12 @@
+"""
+Face training for CNN
+author: Peter Lukac
+login: xlukac11
+April 2020
+"""
+
+from tensorflow.keras import backend
+
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
@@ -9,12 +18,7 @@ import json
 import sys
 from misc import load_images
 
-"""
-cv2.imshow('Example - Show image in window', data[0]+1)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
 
-"""
 
 non_target_data = load_images(['non_target_dev', 'non_target_train'], True)
 # split data into train data and validation data

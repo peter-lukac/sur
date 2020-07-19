@@ -1,3 +1,10 @@
+"""
+Face evaluation using CNN
+author: Peter Lukac
+login: xlukac11
+April 2020
+"""
+
 from keras.models import load_model
 from misc import load_images
 import json
@@ -6,7 +13,7 @@ import numpy as np
 import os
 
 
-if len(sys.argv) < 4:
+if len(sys.argv) != 4:
     print("usage: python eval_face.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE")
     sys.exit(1)
 
