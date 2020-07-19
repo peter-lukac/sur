@@ -6,7 +6,6 @@ April 2020
 """
 
 from keras.models import load_model
-from misc import load_images
 import json
 import sys
 import numpy as np

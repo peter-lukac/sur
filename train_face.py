@@ -5,22 +5,25 @@ login: xlukac11
 April 2020
 """
 
-from tensorflow.keras import backend
-
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
-import os
-import cv2
 import numpy as np
-import random
 import json
 import sys
 from misc import load_images
 
 
+if len(sys.argv) != 3 and len(sys.argv) != 4:
+    print("usage: python train_face.py TARGET_FOLDER NON_TARGET_FOLDER [KERAS_MODEL]")
+    sys.exit(1)
 
-non_target_data = load_images(['non_target_dev', 'non_target_train'], True)
+
+target_folder = sys.argv[1]
+non_target_folder = sys.argv[2]
+
+
+non_target_data = load_images(non_target_folder, True)
 # split data into train data and validation data
 non_target_val_data = non_target_data[164:]
 non_target_data = non_target_data[:164]
@@ -29,7 +32,7 @@ non_target_labels = np.zeros((len(non_target_data)))
 non_target_val_labels = np.zeros((len(non_target_val_data)))
 
 
-target_data = load_images(['target_dev', 'target_train'], True)
+target_data = load_images(target_folder, True)
 # split data into train data and validation data
 target_val_data = target_data[25:]
 target_data = target_data[:25]
@@ -83,6 +86,6 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 # train
 model.fit(data, labels, batch_size=1, epochs=20, validation_data=(val_data, val_labels), shuffle=True)
 
-if len(sys.argv) == 2:
-    model.save(sys.argv[1])
+if len(sys.argv) == 4:
+    model.save(sys.argv[3])
 

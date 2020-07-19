@@ -5,15 +5,10 @@ login: xlukac11
 April 2020
 """
 
-import time
 from keras.models import Sequential
 from keras.layers.core import Flatten, Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv2D, MaxPooling2D, ZeroPadding2D
-import soundfile as sf
-from scipy.signal import spectrogram
-import matplotlib.pyplot as plt
 import numpy as np
-import os
 import json
 from misc import (filter_mask, window_indeces, get_windows,
                 load_specs, process_specs, split_specs, make_mel_filter_bank)
@@ -25,10 +20,18 @@ seed(42)
 from tensorflow.compat.v2.random import set_seed
 set_seed(42)
 
+
+if len(sys.argv) != 3 and len(sys.argv) != 4:
+    sys.stderr.write("usage: python train_voice.py TARGET_FOLDER NON_TARGET_FOLDER [KERAS_MODEL]\n")
+    sys.exit(1)
+
+target_folder = sys.argv[1]
+non_target_foler = sys.argv[2]
+
 M = make_mel_filter_bank(120, 513, 8000)
 
 # load and prepare non target data
-non_target_data = load_specs(['non_target_dev', 'non_target_train'])
+non_target_data = load_specs(non_target_foler)
 non_target_data = process_specs(non_target_data, M)
 non_target_data = split_specs(non_target_data)
 non_target_val_data = np.array(non_target_data[5300:])
@@ -38,7 +41,7 @@ non_target_labels = np.zeros((len(non_target_data)))
 non_target_val_labels = np.zeros((len(non_target_val_data)))
 
 # load and prepare target data
-target_data = load_specs(['target_dev', 'target_train'])
+target_data = load_specs(target_folder)
 target_data = process_specs(target_data, M)
 target_data = split_specs(target_data)
 target_val_data = np.array(target_data[360:])
@@ -91,11 +94,9 @@ model.add(Dense(1, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-t1 = time.time()
 # train
 model.fit(data.astype('float32'), labels, batch_size=64, epochs=12, validation_data=(val_data, val_labels), shuffle=True)
 
-print("elapsed: " + str(time.time() - t1))
 
-if len(sys.argv) == 2:
-    model.save(sys.argv[1])
+if len(sys.argv) == 4:
+    model.save(sys.argv[3])
