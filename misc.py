@@ -9,7 +9,6 @@ from scipy.signal import spectrogram
 import soundfile as sf
 import numpy as np
 import os
-import matplotlib.pyplot as plt
 import cv2
 
 

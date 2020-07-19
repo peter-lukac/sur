@@ -16,7 +16,7 @@ from misc import process_specs, split_specs, make_mel_filter_bank
 
 
 if len(sys.argv) != 4:
-    print("usage: python eval_voice.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE")
+    sys.stderr.write("usage: python eval_voice.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE\n")
     sys.exit(1)
 
 

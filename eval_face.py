@@ -14,7 +14,7 @@ import os
 
 
 if len(sys.argv) != 4:
-    print("usage: python eval_face.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE")
+    sys.stderr.write("usage: python eval_face.py KERAS_MODEL INPUT_FOLDER OUTPUT_FILE\n")
     sys.exit(1)
 
 

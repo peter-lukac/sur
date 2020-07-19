@@ -15,7 +15,7 @@ from misc import load_images
 
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
-    print("usage: python train_face.py TARGET_FOLDER NON_TARGET_FOLDER [KERAS_MODEL]")
+    sys.stderr.write("usage: python train_face.py TARGET_FOLDER NON_TARGET_FOLDER [KERAS_MODEL]\n")
     sys.exit(1)
 
 
